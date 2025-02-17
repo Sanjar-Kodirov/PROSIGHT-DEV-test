@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LocusModule } from './locus/locus.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'hh-pgsql-public.ebi.ac.uk',
@@ -15,8 +14,8 @@ import { AuthModule } from './auth/auth.module';
       database: 'pfmegrnargs',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
-      logging: true,
     }),
+    LocusModule,
     AuthModule,
   ],
 })

@@ -15,9 +15,18 @@ const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
     constructor(jwtService) {
         this.jwtService = jwtService;
+        this.users = [
+            { username: 'admin', role: 'admin' },
+            { username: 'normal', role: 'normal' },
+            { username: 'limited', role: 'limited' },
+        ];
     }
-    async login(user) {
-        const payload = { username: user.username, sub: user.userId };
+    async login(username) {
+        const user = this.users.find((u) => u.username === username);
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not found');
+        }
+        const payload = { username: user.username, role: user.role };
         return {
             access_token: this.jwtService.sign(payload),
         };
